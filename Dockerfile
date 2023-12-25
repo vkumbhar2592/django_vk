@@ -8,8 +8,8 @@ RUN python3 -c "import sqlite3; print(sqlite3.sqlite_version);"
 
 ENV DJANGO_SETTINGS_MODULE=config.settings
 
-RUN dnf install -y gcc-c++ vim
-RUN dnf -y clean all
+#RUN dnf install -y gcc-c++ vim
+#RUN dnf -y clean all
 RUN pip3 install --upgrade pip setuptools requests
 
 RUN python3 -m venv /venv

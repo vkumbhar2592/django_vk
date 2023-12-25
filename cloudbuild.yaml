@@ -95,5 +95,5 @@ options:
 
 images:
   - "$_AR_HOSTNAME/$PROJECT_ID/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA"
-github_checks: false
+#github_checks: false
 # [END cloudrun_django_cloudmigrate]

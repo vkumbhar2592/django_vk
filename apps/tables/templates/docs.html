@@ -1,0 +1,85 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}DataTables - Tables{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-select-bs5/select.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<!-- <script src="{% static 'js/tables-datatables-extensions.js' %}"></script> -->
+<script>
+
+ 
+
+
+</script>
+{% endblock page_js %}
+
+{% block content %}
+
+
+
+<table class="table table-bordered table-hover">
+  <thead class="table table-hover">
+      <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Topic</th>
+          <!-- <th>Content</th> -->
+          <th>Region</th>
+          <th>Status</th> 
+          <!-- Add more headers if needed -->
+      </tr>
+  </thead>
+  <tbody>
+      {% for document in documents %}
+      <tr>  
+        <td>{{ forloop.counter }}</td>
+          <td scope="row"><a href="{{ document.street_url }}">{{ document.name }}</a></td>
+          <td>{{ document.topic.name }}</td>
+          <td>{{ document.region.name }}</td>
+          <td>{{ document.status }}</td> 
+          <td>
+            <div class="btn-group" role="group" aria-label="Second group">
+              <button type="button" data-bs-toggle="collapse" href="#collapsed-{{ document.id }}" role="button" aria-expanded="false" aria-controls="collapseExample" class="btn btn-outline-secondary"><i class="tf-icons bx bx-expand-vertical"></i></button>
+              <a  type="button" href="/dash/docs/{{ document.id }}" class="btn btn-outline-secondary" target="_blank"><i class="tf-icons bx bx-edit-alt"></i></a>
+            </div>
+          </td>
+          <!-- Add more data rows if needed -->
+      </tr>
+      <tr class="m-0 p-0">
+          <tr class="m-0 p-0">
+            <td colspan="5" class="m-0 p-0">
+              <div class="collapse" id="collapsed-{{ document.id }}">{{ document.content | linebreaks }}</div> 
+            </td>
+          </tr>
+      </tr>
+      {% empty %}
+      <tr>
+          <td colspan="6">No documents found.</td>
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+
+
+
+
+{% endblock %}

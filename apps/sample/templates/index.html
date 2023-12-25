@@ -1,0 +1,92 @@
+{% extends layout_path %}
+{% load static %}
+{% block page_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static  'vendor/css/pages/front-page-landing.css' %}">
+{% endblock page_css %}
+
+{% load i18n %}
+
+{% block content %}
+
+{% load socialaccount %}  
+    <div class="row">
+        
+        
+  <!-- Our great team: Start -->
+  <section id="landingTeam" class="section-py landing-team">
+    <div class="container">
+      <div class="text-center mb-3 ">
+        <span class="badge bg-label-primary">Yahoo HR Team V 0.0.1</span>
+      </div>
+      <h3 class="text-center "><span class="section-title">Boosting Productivity</span> & Engagement</h3>
+      
+      <p class="text-center mb-4"> 
+        Welcome to our next-gen AI Empowerment Suite, <br>
+        where innovative AI companions work alongside you  <br>
+        to streamline tasks and elevate productivity
+      </p>
+
+      <h4 class="text-center text-info  "><span class="section-title">Click on any AI agent below for the select employee experience</h4>
+
+      <div class="row gy-5 mt-4 mb-3">
+        <div class="col-lg-3 col-sm-6">
+          <div class="card mt-3 mt-lg-0 shadow-none">
+            <a href="chat/" class=" mt-2">
+            <div class="bg-label-primary position-relative team-image-box">
+              <img src="{% static 'img/front-pages/landing-page/bot11.png' %}" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl img-fluid" alt="human image" />
+            </div>
+            <div class="card-body border border-label-primary border-top-0 text-center">
+                <h5 class="card-title mb-0">Lisa</h5>
+                <p class="text-muted mb-0">HR Answers</p>
+                <p class="text-primary mb-0">General HR Q&A and Search</p> 
+            </div>
+          </a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="card mt-3 mt-lg-0 p-1 shadow-none">
+            <div class="bg-label-info position-relative team-image-box">
+              <img src="{% static 'img/front-pages/landing-page/bot22.png' %}" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl img-fluid" alt="human image" style="filter: grayscale(90%);opacity: 0.7;"  />
+            </div>
+            <div class="card-body border border-label-info border-top-0 text-center">
+              <p class="card-muted mb-0">Terry</p>
+              <p class="text-muted mb-0">Resume Filtering</p>
+              <p class="text-muted mb-0">Coming Soon</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="card mt-3 mt-lg-0 p-1 shadow-none">
+            <div class="bg-label-danger position-relative team-image-box">
+              <img src="{% static 'img/front-pages/landing-page/bot4.png' %}" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl img-fluid" alt="human image" style="filter: grayscale(90%);opacity: 0.7;"  />
+            </div>
+            <div class="card-body border border-label-danger border-top-0 text-center">
+              <p class="card-muted mb-0">Janis</p>
+              <p class="card-muted mb-0">HR Data Insight Insights (L2/L3)</p>
+              <p class="card-muted mb-0">Coming Soon</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="card mt-3 mt-lg-0 p-1 shadow-none">
+            <div class="bg-label-success position-relative team-image-box">
+              <img src="{% static 'img/front-pages/landing-page/bot5.png' %}" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl img-fluid" alt="human image" style="filter: grayscale(90%);opacity: 0.7;" />
+            </div>
+            <div class="card-body border border-label-success border-top-0 text-center">
+              <p class="card-muted mb-0">Rachel</p>
+              <p class="card-muted mb-0">PRD Crafting</p>
+              <p class="card-muted mb-0">Coming Soon</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Our great team: End -->
+
+        
+ </div>
+
+
+{% endblock %}

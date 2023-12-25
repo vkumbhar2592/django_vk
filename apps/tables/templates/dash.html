@@ -1,0 +1,352 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}DataTables - Tables{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-select-bs5/select.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<!-- <script src="{% static 'js/tables-datatables-extensions.js' %}"></script> -->
+<script>
+
+
+$(function () {
+    var dt_scrollable_table_topics = $('.dt-scrollableTableTopics')
+
+    var dt_scrollableTableTopics = dt_scrollable_table_topics.DataTable({
+      // ajax: assetsPath + 'json/table-datatable.json',
+      ajax: {
+        url: '{{API_URL}}/manage/topic/?format=json',
+        dataSrc: ''
+      }, 
+      "lengthChange": false,
+      "searching": false,
+      select: true,
+      columns: [ 
+        { data: 'name' }  
+    ]
+
+      
+    }); 
+
+
+    var dt_scrollable_table_tags = $('.dt-scrollableTableTags')
+
+
+    var dt_scrollableTagsTags = dt_scrollable_table_tags.DataTable({
+      // ajax: assetsPath + 'json/table-datatable.json',
+      ajax: {
+        url: '{{API_URL}}/manage/tag/?format=json',
+        dataSrc: ''
+      }, 
+      "searching": false,
+      "lengthChange": false,
+      select: true,
+      columns: [ 
+        { data: 'name' }  
+    ]
+    }); 
+
+
+    var dt_scrollable_table_regions = $('.dt-scrollableTableRegions')
+
+
+    var dt_scrollableTagsRegions = dt_scrollable_table_regions.DataTable({
+      // ajax: assetsPath + 'json/table-datatable.json',
+      ajax: {
+        url: '{{API_URL}}/manage/region/?format=json',
+        dataSrc: ''
+      }, 
+      "searching": false,
+      "lengthChange": false,
+      select: true,
+      columns: [ 
+        { data: 'name' }  
+    ]
+
+      
+    }); 
+
+
+    var dt_scrollable_table_documents = $('.dt-scrollableTableDocuments')
+
+
+    var dt_scrollableTagsDocuments = dt_scrollable_table_documents.DataTable({
+      // ajax: assetsPath + 'json/table-datatable.json',
+      ajax: {
+        url: '{{API_URL}}/manage/document/?format=json',
+        dataSrc: ''
+      }, 
+      "searching": false,
+      "lengthChange": false,
+      select: true,
+      columns: [ 
+        { data: 'name' },
+        { data: 'street_url' },
+        { data: 'topic' },
+        { data: 'status' }
+    ]
+
+      
+    }); 
+
+
+
+
+ 
+});
+
+
+function searchFAISS() {
+  var query = "my name is sam"; // Replace "your_query_here" with the actual query value
+
+  $.ajax({
+    url: '{{API_URL}}/manage/faiss-chunks/',
+    type: 'GET',
+    dataType: 'json',
+    data: { query: query }, // Add the query parameter to the API request
+    success: function (data) {
+      console.log(data);
+      alert('Searching the vector space is complete');
+    },
+    error: function (data) {
+      console.log(data);
+      alert('Searching the vector space failed');
+    }
+  });
+}
+
+function reindexVectorSpace() {
+  $.ajax({
+    url: '{{API_URL}}/manage/reindex-documents/',
+    type: 'GET',
+    dataType: 'json',
+    success: function (data) {
+      console.log(data);
+      alert('Reindexing the vector space is complete');
+    },
+    error: function (data) {
+      console.log(data);
+      alert('Reindexing the vector space failed');
+    }
+  });
+}
+
+
+function loadTextIntoSQL() {
+ 
+  $.ajax({
+    url: '{{API_URL}}/manage/LoadTextFilesIntoSQL/',
+    type: 'GET',
+    dataType: 'json',
+    data: {  }, // Add the query parameter to the API request
+    success: function (data) {
+      console.log(data);
+      alert('Adding text files into DB done');
+    },
+    error: function (data) {
+      console.log(data);
+      alert('Failure adding text files into DB');
+    }
+  });
+}
+
+</script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="demo-inline-spacing mb-5">
+  <button type="button" class="btn   btn-instagram  " onclick="reindexVectorSpace()">
+    <span class="tf-icons bx bx-pie-chart-alt me-1"></span>Reindex The Vector Space
+  </button>
+
+<!--
+  <button type="button" class="btn   btn-outline-secondary  " onclick="loadTextIntoSQL()">
+    <span class="tf-icons bx bx-pie-chart-alt me-1"></span>Load Text Files Into SQL
+  </button> -->
+   
+</div>
+
+<div class="row">
+
+  <!-- <div class="col-md-4">
+    
+     
+    <div class="card"> 
+      <div class="p-1 m-1 row"> 
+        <div class="col-md-6">
+          <h5 class=" ">Topics</h5>
+        </div> 
+        <div class="col-md-6 text-md-end ">
+          <button type="button" class="btn rounded-pill btn-icon btn-outline-secondary">
+            <span class="tf-icons bx bx-pencil"></span>
+          </button>
+        </div> 
+      </div> 
+      <div class="card-datatable text-nowrap">
+        <table class="dt-scrollableTableTopics table table-bordered" data-page-length='5'>
+          <thead>
+            <tr> 
+              <th>name</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div> 
+
+
+  </div> -->
+
+
+  <!-- <div class="col-md-4">
+    
+     
+    <div class="card"> 
+      <div class="p-1 m-1 row"> 
+        <div class="col-md-6">
+          <h5 class=" ">Tags</h5>
+        </div> 
+        <div class="col-md-6 text-md-end ">
+          <button type="button" class="btn rounded-pill btn-icon btn-outline-secondary">
+            <span class="tf-icons bx bx-pencil"></span>
+          </button>
+        </div> 
+      </div> 
+      <div class="card-datatable text-nowrap">
+        <table class="dt-scrollableTableTags table table-bordered" data-page-length='5'>
+          <thead>
+            <tr> 
+              <th>name</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div> 
+
+
+  </div> -->
+
+  
+  <!-- <div class="col-md-4">
+    <div class="card"> 
+      <div class="p-1 m-1 row"> 
+        <div class="col-md-6">
+          <h5 class=" ">Regions</h5>
+        </div> 
+        <div class="col-md-6 text-md-end ">
+          <button type="button" class="btn rounded-pill btn-icon btn-outline-secondary">
+            <span class="tf-icons bx bx-pencil"></span>
+          </button>
+        </div> 
+      </div> 
+      <div class="card-datatable text-nowrap">
+        <table class="dt-scrollableTableRegions table table-bordered" data-page-length='5'>
+          <thead>
+            <tr> 
+              <th>name</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div> 
+  
+  </div>-->
+</div> 
+
+<!-- <div class="row">
+
+  <div class="card mt-4"> 
+    <div class="p-1 m-1 row"> 
+      <div class="col-md-6">
+        <h5 class=" ">Documents</h5>
+      </div> 
+      <div class="col-md-6 text-md-end ">
+        <button type="button" class="btn rounded-pill btn-icon btn-outline-secondary">
+          <span class="tf-icons bx bx-pencil"></span>
+        </button>
+      </div> 
+    </div> 
+    <div class="card-datatable text-nowrap">
+      <table class="dt-scrollableTableDocuments table table-bordered" data-page-length='5'>
+        <thead>
+          <tr>  
+
+            <th>name</th> 
+            <th>street_url</th>
+            <th>topic</th>
+            <th>status</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div> 
+
+</div> -->
+
+
+<table class="table table-bordered table-hover">
+  <thead class="table table-hover">
+      <tr>
+          <th></th>
+          <th>Question</th>
+          <th>Answer</th> 
+          <!-- Add more headers if needed -->
+      </tr>
+  </thead>
+  <tbody>
+      {% for chatlog in chatlogs reversed %}
+      <tr>  
+          <td>{{ forloop.counter }}</td> 
+          <td>{{ chatlog.question }}</td>
+          <td>{{ chatlog.response }}</td> 
+          <td>{{ chatlog.last_updated_by }}</td> 
+          <td>
+            {% if chatlog.is_liked %} 
+              <i class="tf-icons bx bx-like"></i> 
+            {% endif %}
+            {% if chatlog.is_disliked %}
+            <i class="tf-icons bx bx-dislike"></i>
+            {% endif %} 
+            {% if chatlog.is_bookmarked %}
+            <i class="tf-icons bx bx-bookmark-star"></i>
+            {% endif %} 
+          </td>
+          <td>
+            <div class="btn-group" role="group" aria-label="Second group">
+              <button type="button" data-bs-toggle="collapse" href="#collapsed-{{ document.id }}" role="button" aria-expanded="false" aria-controls="collapseExample" class="btn btn-outline-secondary"><i class="tf-icons bx bx-expand-vertical"></i></button>
+            </div>
+          </td>
+          <!-- Add more data rows if needed -->
+      </tr>
+      <tr class="m-0 p-0">
+          <tr class="m-0 p-0">
+            <td colspan="5" class="m-0 p-0">
+              <div class="collapse" id="collapsed-{{ document.id }}">{{ document.content | linebreaks }}</div> 
+            </td>
+          </tr>
+      </tr>
+      {% empty %}
+      <tr>
+          <td colspan="6">No documents found.</td>
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

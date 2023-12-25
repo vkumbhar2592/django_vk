@@ -1,0 +1,87 @@
+
+Title:  Kaiser
+Region:  California,US & Georgia,US & DC,US & Maryland,US & Virginia,US & Northwest,US
+Last updated:  
+
+Document: 
+
+
+ Kaiser Permanente Medical Plan 
+
+- Available only in California, Georgia, Mid-Atlantic (DC, Maryland, Virginia), and Northwest based on zip codes.
+- If eligible, the plan is offered in ADP upon enrollment.
+- Coverage includes basic medical, mental health & substance abuse.
+- Includes prescription drug coverage.
+- Members can change their doctor anytime.
+- Many locations offer pharmacy, lab, and X-ray services under one roof.
+
+ Eligibility : 
+- Full-time employees.
+- Part-time employees working at least 20 hours weekly.
+- Eligible dependents: spouses, dependent children (up to age 26), domestic partners and their children (up to age 26).
+
+ Kaiser Behavioral Health 
+- Provides help for depression, anxiety, addiction, and other mental health issues.
+- No referral needed for mental health and addiction services.
+- Personal doctors can connect you with support.
+- Apps available for self-care:
+  - Ginger App: 1-on-1 emotional support via text, available 24/7. Free for Kaiser members for 90 days.
+  - Calm App: App for sleep and meditation with guided meditations, sleep stories, and exclusive music tracks.
+  - myStrength App: Personalized emotional health plans, tools for managing stress, depression, sleep, and various resources.
+
+ Kaiser HMO Medical Plan 
+- Predictable costs and no deductibles.
+- In-network only plan.
+- Seek medical services at Kaiser facilities.
+
+ In-network Costs :
+-  California : 
+  - No deductible or coinsurance.
+  - Individual out-of-pocket maximum: $1,500.
+  - Family out-of-pocket maximum: $3,000.
+  - Office visit copay: $20 (PCP), $35 (Specialist).
+  - Inpatient hospital copay: $100.
+  - Prescription costs detailed for retail and mail order.
+  
+-  Northwest :
+  - Details similar to California with some variations in prescription costs.
+  
+-  Mid-Atlantic :
+  - Individual out-of-pocket maximum: $3,500.
+  - Family out-of-pocket maximum: $9,400.
+  - Other costs similar to above regions.
+
+-  Georgia :
+  - Individual out-of-pocket maximum: $6,850.
+  - Family out-of-pocket maximum: $13,700.
+  - Other costs are consistent with the mentioned regions.
+
+ 2023 Contribution Rates :
+-  California : 
+  - You: $60.69.
+  - You +1: $115.92.
+  - Family: $169.50.
+  
+-  Georgia :
+  - You: $62.08.
+  - You +1: $118.58.
+  - Family: $173.54.
+
+-  Mid-Atlantic :
+  - You: $58.96.
+  - You +1: $109.88.
+  - Family: $159.63.
+
+-  Northwest :
+  - You: $60.96.
+  - You +1: $115.92.
+  - Family: $169.50.
+
+- Medical contributions reduced by $25 if declared non-tobacco users.
+- VP1 and above pay around 150% of the mentioned rates.
+- Contributions spread over 24 paychecks. No contributions in a 3rd paycheck of a month.
+
+ Evidence of Coverage : 
+- Details about the plan can be found in the "Evidence of Coverage" for each region. Multiple regions mentioned.
+
+ <END>

@@ -1,0 +1,59 @@
+{
+  "menu": [
+    {
+      "url": "/dash/view",
+      "external": true,
+      "icon": "menu-icon tf-icons bx bx-cross bx-burst-hover",
+      "name": "Dashboard",
+      "slug": "dashboard"
+    },
+    {
+      "url": "/chat",
+      "external": true,
+      "icon": "menu-icon tf-icons bx bx-message-dots bx-burst-hover",
+      "name": "Chat",
+      "slug": "chat"
+    },
+    {
+      "url": "/dash/docs",
+      "external": true,
+      "icon": "menu-icon tf-icons bx bx-text bx-burst-hover",
+      "name": "Docs",
+      "slug": "docs"
+    },
+    {
+      "url": "/manage/topic",
+      "icon": "menu-icon tf-icons bx bx-category",
+      "external": true,
+      "name": "Topics",
+      "slug": "topics"
+    },
+    {
+      "url": "/manage/tag",
+      "external": true,
+      "icon": "menu-icon tf-icons bx bx-tag-alt",
+      "name": "Tags",
+      "slug": "tags"
+    },
+    {
+      "url": "/manage/region",
+      "external": true,
+      "icon": "menu-icon tf-icons bx bx-tag-alt",
+      "name": "Regions",
+      "slug": "regions"
+    },
+    {
+      "url": "/manage/document",
+      "external": true,
+      "icon": "menu-icon tf-icons bx bx-file-blank bx-burst-hover",
+      "name": "Documents",
+      "slug": "documents"
+    },
+    {
+      "url": "feedback",
+      "icon": "menu-icon tf-icons bx bx-detail",
+      "name": "feedback",
+      "slug": "feedback"
+    }
+  ]
+}

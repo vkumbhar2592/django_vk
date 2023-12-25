@@ -1,0 +1,109 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}DataTables - Tables{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-select-bs5/select.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<!-- <script src="{% static 'js/tables-datatables-extensions.js' %}"></script> -->
+<script>
+
+ 
+
+
+</script>
+{% endblock page_js %}
+
+{% block content %}
+
+{% if document %}
+<form action="{% url 'document_update_url' document.id %}" method="post">
+    {% csrf_token %}
+    <div class="container mt-3">
+        <h2>Edit Document</h2>
+
+        
+        <div class="form-group">
+            <label for="documentName">Name</label>
+            <input type="text" class="form-control" id="documentName" name="name" value="{{ document.name }}">
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="documentTopic">Topic</label>
+              <select class="form-control" id="documentTopic" name="topic">
+                {% for topic in topics %}
+                <option value="{{ topic.id }}" {% if document.topic.id == topic.id %}selected{% endif %}>{{ topic.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col">
+            <!-- Multi-select for Tags -->
+            <div class="form-group">
+              <label for="documentTags">Tags</label>
+              <select class="form-control" id="documentTags" name="tags" multiple>
+                {% for tag in tags %}
+                <option value="{{ tag.id }}" {% if tag in document.tags.all %}selected{% endif %}>{{ tag.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-group">
+              <label for="documentRegion">Region</label>
+              <select class="form-control" id="documentRegion" name="region">
+                {% for region in regions %}
+                <option value="{{ region.id }}" {% if document.region.id == region.id %}selected{% endif %}>{{ region.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-group">
+              <label for="documentStatus">Status</label>
+              <select class="form-control" id="documentStatus" name="status">
+                <option value="pending" {% if document.status == "pending" %}selected{% endif %}>Pending</option>
+                <option value="approved" {% if document.status == "approved" %}selected{% endif %}>Approved</option>
+                <option value="archived" {% if document.status == "archived" %}selected{% endif %}>Archived</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div  class="form-group">
+            <label for="documentContent">Content</label>
+            <textarea class="form-control" id="documentContent" name="content" rows="30">{{ document.content }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary my-4">Save Changes</button>
+    </div>
+</form>
+{% else %}
+<p>No document found.</p>
+{% endif %}
+
+
+
+{% endblock %}

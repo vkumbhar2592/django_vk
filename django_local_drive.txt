@@ -1,0 +1,29 @@
+
+
+project: django-sashi-test
+
+project id: django-sashi-test
+project number: 586313358879
+region: us-west4
+
+svc:  svc-django-sashi-test@django-sashi-test.iam.gserviceaccount.com
+
+gcs bucket: django-sashi-test-bucket
+
+db instance:
+
+instance: django-sashi-test-instance
+db: django-sashi-test-db
+db user: django-sashi-test-user
+db pwd: admin
+
+cloud run service name: django-sashi-test-cloudrun
+
+DATABASE_URL=postgres://django-sashi-test-user:admin@//cloudsql/django-sashi-test:us-west4:django-sashi-test-instance/django-sashi-test-db
+
+Secrets:
+django_sashi_test_settings : projects/586313358879/secrets/django_sashi_test_settings/versions/latest
+DATABASE_URL : projects/586313358879/secrets/DATABASE_URL/versions/latest
+GS_BUCKET_NAME : projects/586313358879/secrets/GS_BUCKET_NAME/versions/latest
+ENVIRONMENT : projects/586313358879/secrets/ENVIRONMENT/versions/latest
+

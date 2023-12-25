@@ -87,7 +87,7 @@ substitutions:
   _REPO_NAME: cloud-run-source-deploy
   _AR_HOSTNAME: gcr.io
   _PROJECT_NUM: '586313358879'
-  _SERVICE_NAME: django-sashi-test-cloudrun
+  _SERVICE_NAME: django-app-sashi
   _SERVICE_ACCOUNT: svc-django-sashi-test@django-sashi-test.iam.gserviceaccount.com
 
 options:

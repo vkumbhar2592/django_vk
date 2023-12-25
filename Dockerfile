@@ -1,5 +1,5 @@
 FROM python:3.11-slim
-RUN echo "max_parallel_downloads=20" | tee -a /etc/dnf/dnf.conf >/dev/null
+#RUN echo "max_parallel_downloads=20" | tee -a /etc/dnf/dnf.conf >/dev/null
 
 # use cloud sql - cloud sql proxy
 RUN python3 -c "import sqlite3; print(sqlite3.sqlite_version);"

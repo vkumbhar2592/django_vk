@@ -18,6 +18,7 @@ ADD requirements.txt /venv/requirements.txt
 RUN /venv/bin/pip install -U -r /venv/requirements.txt
 ADD . /venv/
 
+ENV PATH="/venv/bin:$PATH"
 # Node stuff that doesn't work inside a docker container :(
 #RUN dnf install -y https://rpm.nodesource.com/pub_20.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y
 #RUN curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo

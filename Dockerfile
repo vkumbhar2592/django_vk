@@ -25,7 +25,7 @@ ADD . /venv/
 #RUN cd /venv/src && yarn install
 #RUN cd /venv/src && yarn build
 
-ENTRYPOINT ["sh", "/venv/start.sh"]
+#ENTRYPOINT ["sh", "/venv/start.sh"]
 #ENTRYPOINT ["tail", "-f", "/dev/null"]
 
 # ----------- Deploy step for app ----------- #
@@ -37,3 +37,5 @@ ENTRYPOINT ["sh", "/venv/start.sh"]
 # WORKDIR /venv/
 
 # ENTRYPOINT ["sh", "/venv/start.sh"]
+
+CMD exec gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 0 config.wsgi:application

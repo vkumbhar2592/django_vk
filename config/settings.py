@@ -10,6 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+import io
+from urllib.parse import urlparse
+
+import environ
+import google.auth
+from google.cloud import secretmanager
 import random
 import string
 from pathlib import Path
@@ -37,7 +43,7 @@ CHUNCK_SEPARATOR = ["<END>", "\n\n", "\n"]
 
 
 
-# Current DJANGO_ENVIRONMENT
+# # Current DJANGO_ENVIRONMENT
 # ENVIRONMENT = os.environ.get("DJANGO_ENVIRONMENT", "local")
 
 
@@ -56,7 +62,7 @@ except google.auth.exceptions.DefaultCredentialsError:
 
 if os.path.isfile(env_file):
     # Use a local secret file, if provided
-
+    print("inside env file: ", env_file)
     env.read_env(env_file)
 # [START_EXCLUDE]
 elif os.getenv("TRAMPOLINE_CI", None):
@@ -74,9 +80,9 @@ elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
     #project_num  = os.environ.get("GOOGLE_CLOUD_PROJECT_NUM")
     #project_num  = 856106838446
-    project_num  = 586313358879
+    project_num  = 691746426579
     client = secretmanager.SecretManagerServiceClient()
-    settings_name = os.environ.get("SETTINGS_NAME", "django_sashi_test_settings")
+    settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
     name = f"projects/{project_num}/secrets/{settings_name}/versions/latest"
     response = client.access_secret_version(request={"name": name})
     payload = response.payload.data.decode("UTF-8")
@@ -96,6 +102,10 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = os.environ.get("DEBUG", True)
 DEBUG = env("DEBUG")
+
+# Current DJANGO_ENVIRONMENT
+#ENVIRONMENT = env("DJANGO_ENVIRONMENT", default="local")
+ENVIRONMENT = os.environ.get("DJANGO_ENVIRONMENT", "local")
 
 # [START cloudrun_django_csrf]
 # SECURITY WARNING: It's recommended that you use this when
@@ -206,7 +216,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "db/db.sqlite3",
     }
 }
 
@@ -234,14 +244,26 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 # Enable i18n and set the list of supported languages
-LANGUAGES = [
-    ("en", _("English")),
-    ("fr", _("French")),
-    ("de", _("German")),
-    ("pt", _("Portuguese")),
-    ("ar", _("Arabic")),
-    # Add more languages as needed
-]
+# LANGUAGES = [
+#     ("en", _("English")),
+#     ("fr", _("French")),
+#     ("de", _("German")),
+#     ("pt", _("Portuguese")),
+#     ("ar", _("Arabic")),
+#     # Add more languages as needed
+# ]
+
+# Internationalization
+
+LANGUAGE_CODE = "en-us"
+
+TIME_ZONE = "UTC"
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
 
 # Set default language
 LANGUAGE_CODE = "en"

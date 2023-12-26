@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 #RUN echo "max_parallel_downloads=20" | tee -a /etc/dnf/dnf.conf >/dev/null
 
 # use cloud sql - cloud sql proxy

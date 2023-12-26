@@ -11,8 +11,8 @@ steps:
       [
         "-i",
         "${_AR_HOSTNAME}/$PROJECT_ID/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA",
-        "-s",
-        "$PROJECT_ID:${_REGION}:${_INSTANCE_NAME}",
+        # "-s",
+        # "$PROJECT_ID:${_REGION}:${_INSTANCE_NAME}",
         "--",
         "python",
         "manage.py",
@@ -24,8 +24,8 @@ steps:
       [
         "-i",
         "${_AR_HOSTNAME}/$PROJECT_ID/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA",
-        "-s",
-        "$PROJECT_ID:${_REGION}:${_INSTANCE_NAME}",
+        # "-s",
+        # "$PROJECT_ID:${_REGION}:${_INSTANCE_NAME}",
         "--",
         "python",
         "manage.py",
@@ -38,8 +38,8 @@ steps:
       [
         "-i",
         "${_AR_HOSTNAME}/$PROJECT_ID/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA",
-        "-s",
-        "$PROJECT_ID:${_REGION}:${_INSTANCE_NAME}",
+        # "-s",
+        # "$PROJECT_ID:${_REGION}:${_INSTANCE_NAME}",
         "--",
         "python",
         "manage.py",
@@ -49,6 +49,25 @@ steps:
         "--no-input",
       ]
     secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME']
+
+  - name: "gcr.io/google-appengine/exec-wrapper"
+    args:
+      [
+        "-i",
+        "${_AR_HOSTNAME}/$PROJECT_ID/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA",
+        # "-s",
+        # "$PROJECT_ID:${_REGION}:${_INSTANCE_NAME}",
+        "--",
+        "python",
+        "manage.py",
+        "createsuperuser",
+        "--username",
+        "admin",
+        "--email",
+        "svc-app-dev@django-project-2-409014.iam.gserviceaccount.com",
+      ]
+    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME']
+
 
   # Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -61,8 +80,8 @@ steps:
        "$_AR_HOSTNAME/$PROJECT_ID/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA",
        "--region",
        "${_REGION}",
-       "--add-cloudsql-instances",
-       "$PROJECT_ID:${_REGION}:${_INSTANCE_NAME}",
+      #  "--add-cloudsql-instances",
+      #  "$PROJECT_ID:${_REGION}:${_INSTANCE_NAME}",
        "--service-account",
        "$_SERVICE_ACCOUNT",
        "--allow-unauthenticated",
@@ -82,13 +101,13 @@ availableSecrets:
     env: 'GS_BUCKET_NAME'
 
 substitutions:
-  _INSTANCE_NAME: django-sashi-test-instance
-  _REGION: us-west4
+  _INSTANCE_NAME: django-dev-db
+  _REGION: asia-south1
   _REPO_NAME: cloud-run-source-deploy
-  _AR_HOSTNAME: gcr.io
-  _PROJECT_NUM: '586313358879'
-  _SERVICE_NAME: django-app-sashi
-  _SERVICE_ACCOUNT: svc-django-sashi-test@django-sashi-test.iam.gserviceaccount.com
+  #_AR_HOSTNAME: gcr.io
+  _PROJECT_NUM: '691746426579'
+  _SERVICE_NAME: django-vk
+  _SERVICE_ACCOUNT: svc-app-dev@django-project-2-409014.iam.gserviceaccount.com
 
 options:
   logging: CLOUD_LOGGING_ONLY

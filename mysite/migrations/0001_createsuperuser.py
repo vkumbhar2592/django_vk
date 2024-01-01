@@ -37,7 +37,7 @@ def createsuperuser(apps: StateApps, schema_editor: DatabaseSchemaEditor) -> Non
 
         # Get project value for identifying current context
         _, project = google.auth.default()
-        project_num = '691746426579'
+        project_num = '683505664244'
         # Retrieve the previously stored admin password
         PASSWORD_NAME = os.environ.get("PASSWORD_NAME", "superuser_password")
         # PASSWORD_NAME = os.environ.get("PASSWORD_NAME", "admin")

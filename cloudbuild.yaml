@@ -64,7 +64,7 @@ steps:
         "--username",
         "admin",
         "--email",
-        "svc-app-dev@django-project-2-409014.iam.gserviceaccount.com",
+        "svc-app-dev@django-project-3-409015.iam.gserviceaccount.com",
       ]
     secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME']
 
@@ -107,7 +107,7 @@ substitutions:
   #_AR_HOSTNAME: gcr.io
   _PROJECT_NUM: '691746426579'
   _SERVICE_NAME: django-vk
-  _SERVICE_ACCOUNT: svc-app-dev@django-project-2-409014.iam.gserviceaccount.com
+  _SERVICE_ACCOUNT: svc-app-dev@django-project-3-409015.iam.gserviceaccount.com
 
 options:
   logging: CLOUD_LOGGING_ONLY

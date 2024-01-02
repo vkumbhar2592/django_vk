@@ -50,25 +50,6 @@ steps:
       ]
     secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME']
 
-  - name: "gcr.io/google-appengine/exec-wrapper"
-    args:
-      [
-        "-i",
-        "${_AR_HOSTNAME}/$PROJECT_ID/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA",
-        # "-s",
-        # "$PROJECT_ID:${_REGION}:${_INSTANCE_NAME}",
-        "--",
-        "python",
-        "manage.py",
-        "createsuperuser",
-        "--username",
-        "admin",
-        "--email",
-        "svc-app-dev@django-project-3-409015.iam.gserviceaccount.com",
-      ]
-    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME']
-
-
   # Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
@@ -105,9 +86,10 @@ substitutions:
   _REGION: asia-south1
   _REPO_NAME: cloud-run-source-deploy
   #_AR_HOSTNAME: gcr.io
-  _PROJECT_NUM: '683505664244'
-  _SERVICE_NAME: django-app-run
+  _PROJECT_NUM: '691746426579'
+  _SERVICE_NAME: django-vk
   _SERVICE_ACCOUNT: svc-app-dev@django-project-3-409015.iam.gserviceaccount.com
+
 
 options:
   logging: CLOUD_LOGGING_ONLY

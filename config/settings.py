@@ -80,7 +80,7 @@ elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
     #project_num  = os.environ.get("GOOGLE_CLOUD_PROJECT_NUM")
     #project_num  = 856106838446
-    project_num  = 683505664244
+    project_num  = 691746426579
     client = secretmanager.SecretManagerServiceClient()
     settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
     name = f"projects/{project_num}/secrets/{settings_name}/versions/latest"
@@ -119,7 +119,8 @@ if CLOUDRUN_SERVICE_URL:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 else:
     ALLOWED_HOSTS = ["*"]
-    
+
+#ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
 API_URL = env("CLOUDRUN_SERVICE_URL", default=None)
 # [END cloudrun_django_csrf]
 

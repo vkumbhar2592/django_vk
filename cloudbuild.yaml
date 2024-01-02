@@ -86,7 +86,7 @@ substitutions:
   _REGION: asia-south1
   _REPO_NAME: cloud-run-source-deploy
   #_AR_HOSTNAME: gcr.io
-  _PROJECT_NUM: '691746426579'
+  _PROJECT_NUM: '683505664244'
   _SERVICE_NAME: django-vk
   _SERVICE_ACCOUNT: svc-app-dev@django-project-3-409015.iam.gserviceaccount.com
 

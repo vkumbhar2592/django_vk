@@ -142,6 +142,10 @@ INSTALLED_APPS = [
     "apps.tables.apps.TablesConfig",
     "django.contrib.sites",
     "apps.chat.apps.ChatConfig",
+    'oauth2_provider',#new
+    'social_django',#new
+    'drf_social_oauth2',#new
+    'corsheaders',#new
     "allauth",
     "allauth.account",
     "allauth.socialaccount",

@@ -88,6 +88,7 @@ elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     payload = response.payload.data.decode("UTF-8")
 
     env.read_env(io.StringIO(payload))
+    print('Extract env: ', env)
 else:
     raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
 # [END cloudrun_django_secret_config]
@@ -164,11 +165,10 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online' 
         },
         'APP': {
-            'client_id': env('CLIENT_ID'),
-            'secret': env('SECRET')
+            'client_id': env("CLIENT_ID"),
+            'secret': env("SECRET")
+        }
     }
-    }
-    
 }
 
 SITE_ID = 1

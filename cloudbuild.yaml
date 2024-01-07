@@ -18,7 +18,7 @@ steps:
         "manage.py",
         "makemigrations",
       ]
-    secretEnv: ['ENVIRONMENT','DATABASE_URL', 'GS_BUCKET_NAME','CLIENT_ID','SECRET']
+    secretEnv: ['ENVIRONMENT','DATABASE_URL','GS_BUCKET_NAME','CLIENT_ID','SECRET']
   - name: "gcr.io/google-appengine/exec-wrapper"
     args:
       [
@@ -31,7 +31,7 @@ steps:
         "manage.py",
         "migrate",
       ]
-    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME']
+    secretEnv: ['ENVIRONMENT','DATABASE_URL','GS_BUCKET_NAME','CLIENT_ID','SECRET']
 
   - name: "gcr.io/google-appengine/exec-wrapper"
     args:
@@ -48,7 +48,7 @@ steps:
         "2",
         "--no-input",
       ]
-    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME']
+    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME','CLIENT_ID','SECRET']
 
   # Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -69,7 +69,7 @@ steps:
        "--platform",
        "managed",
       ]
-    secretEnv: ['ENVIRONMENT','DATABASE_URL', 'GS_BUCKET_NAME','CLIENT_ID','SECRET']
+    secretEnv: ['ENVIRONMENT','DATABASE_URL','GS_BUCKET_NAME','CLIENT_ID','SECRET']
 availableSecrets:
   secretManager:
   - versionName: projects/${_PROJECT_NUM}/secrets/ENVIRONMENT/versions/latest
@@ -80,6 +80,10 @@ availableSecrets:
     env: 'DATABASE_URL'
   - versionName: projects/${_PROJECT_NUM}/secrets/GS_BUCKET_NAME/versions/latest
     env: 'GS_BUCKET_NAME'
+  - versionName: projects/${_PROJECT_NUM}/secrets/CLIENT_ID/versions/latest
+    env: 'CLIENT_ID'
+  - versionName: projects/${_PROJECT_NUM}/secrets/SECRET/versions/latest
+    env: 'SECRET'
 
 substitutions:
   _INSTANCE_NAME: django-dev-db

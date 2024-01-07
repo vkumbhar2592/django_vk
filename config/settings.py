@@ -165,7 +165,7 @@ SOCIALACCOUNT_PROVIDERS = {
         },
         'APP': {
             'client_id': env('CLIENT_ID'),
-            'secret': env('SECRET'),
+            'secret': env('SECRET')
     }
     }
     

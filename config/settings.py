@@ -154,7 +154,7 @@ INSTALLED_APPS = [
 
 ]
 
-SOCIALACCOUNT_PROVIDERS = { 
+SOCIALACCOUNT_PROVIDERS = {
     'google': { 
         'SCOPE': [ 
             'profile', 
@@ -162,12 +162,13 @@ SOCIALACCOUNT_PROVIDERS = {
         ], 
         'AUTH_PARAMS': { 
             'access_type': 'online' 
-        } 
+        },
+        'APP': {
+            'client_id': env('CLIENT_ID'),
+            'secret': env('SECRET'),
     }
-       'APP': {
-        'client_id': env('CLIENT_ID'),
-        'secret': env('SECRET'),
     }
+    
 }
 
 SITE_ID = 1

@@ -172,9 +172,9 @@ function loadTextIntoSQL() {
 
 {% block content %}
 <div class="demo-inline-spacing mb-5">
-  <button type="button" class="btn   btn-instagram  " onclick="reindexVectorSpace()">
+  <!-- <button type="button" class="btn   btn-instagram  " onclick="reindexVectorSpace()">
     <span class="tf-icons bx bx-pie-chart-alt me-1"></span>Reindex The Vector Space
-  </button>
+  </button> -->
 
 <!--
   <button type="button" class="btn   btn-outline-secondary  " onclick="loadTextIntoSQL()">
@@ -327,9 +327,11 @@ function loadTextIntoSQL() {
             <i class="tf-icons bx bx-bookmark-star"></i>
             {% endif %} 
           </td>
+
+          <td>{{ chatlog.comment }}</td> 
           <td>
             <div class="btn-group" role="group" aria-label="Second group">
-              <button type="button" data-bs-toggle="collapse" href="#collapsed-{{ document.id }}" role="button" aria-expanded="false" aria-controls="collapseExample" class="btn btn-outline-secondary"><i class="tf-icons bx bx-expand-vertical"></i></button>
+              <button type="button" data-bs-toggle="collapse" href="#collapsed-{{ chatlog.id }}" role="button" aria-expanded="false" aria-controls="collapseExample" class="btn btn-outline-secondary"><i class="tf-icons bx bx-expand-vertical"></i></button>
             </div>
           </td>
           <!-- Add more data rows if needed -->
@@ -337,7 +339,7 @@ function loadTextIntoSQL() {
       <tr class="m-0 p-0">
           <tr class="m-0 p-0">
             <td colspan="5" class="m-0 p-0">
-              <div class="collapse" id="collapsed-{{ document.id }}">{{ document.content | linebreaks }}</div> 
+              <div class="collapse" id="collapsed-{{ chatlog.id }}">{{ chatlog.prompt | linebreaks }}</div> 
             </td>
           </tr>
       </tr>

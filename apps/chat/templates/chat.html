@@ -75,7 +75,7 @@ h6,.h6  {
           }
         }
         const div = document.getElementById('sources-'+id);
-        div.innerHTML = 'Scanned Sources ' + sources.map(source => `<a href="${source.url}">${source.title}</a>`).join(' & ');  
+        div.innerHTML = 'Scanned Sources ' + sources.map(source => `<a href="${source.url}" target="_blank">${source.title}</a>`).join(' & ');  
       }
       else if (data.content) {
         full_message += data.content ; //.replace(/\n\n/g, '<br/>');
@@ -110,7 +110,9 @@ h6,.h6  {
 
     const likeDiv = document.getElementById("like-btn-"+ id)
     likeDiv.classList.add("bxs-like")
+    disliked_response_id = chatLog_id;
 
+    console.log('chatlogid >>> ' + chatLog_id)
     // Send a GET request to the Django backend
     fetch('/chat/api/update_like/?chatlog_id=' + chatLog_id)
     .then(response => response.json())
@@ -188,7 +190,7 @@ h6,.h6  {
 
   }
 
-  function sendDislikeComment() {
+  function sendLikeDislikeComment() {
     const comment = document.getElementById("nameBasic").value;
     console.log(comment);
     console.log(disliked_response_id);
@@ -199,11 +201,11 @@ h6,.h6  {
     .then(data => {
         if (data.status === 'success') {
             console.log('Dislike updated successfully');  
-            $('#dislike-feedback').modal('hide');
+            $('#dislike-feedback').modal('hide'); 
             comment.innerHTML = '';
         } else {
             console.error('Error updating like:', data.message); 
-            $('#dislike-feedback').modal('hide');
+            $('#dislike-feedback').modal('hide'); 
             comment.innerHTML = '';
         }
     })
@@ -237,7 +239,7 @@ h6,.h6  {
              
               
               `<div  id='sources-`+id+`' class=" "    ></div>`+
-              `<div  id='like-btn-`+id+`' class="s bx bx-like bx-sm cursor-pointer m-2 " onclick="likeBtnClick('`+id+`')"  ></div>`+
+              `<div data-bs-toggle="modal" data-bs-target="#dislike-feedback"   id='like-btn-`+id+`' class="s bx bx-like bx-sm cursor-pointer m-2 " onclick="likeBtnClick('`+id+`')"  ></div>`+
               `<div data-bs-toggle="modal" data-bs-target="#dislike-feedback" id='dislike-btn-`+id+`' class=" bx bx-dislike bx-sm cursor-pointer m-2 "  onclick="dislikeBtnClick('`+id+`')" ></div>`+
               `<div   id='bookmark-btn-`+id+`' class=" bx bx-bookmark-plus bx-sm cursor-pointer m-2 " onclick="bookmarkBtnClick('`+id+`')"   ></div>` ;
 
@@ -377,7 +379,7 @@ h6,.h6  {
     <div class="col-lg-4 col-md-6"> 
       <div class="mt-3">
      
-        <!-- Modal -->
+        <!-- DISLIKE / LIKE Modal -->
         <div class="modal fade" id="dislike-feedback" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -385,22 +387,31 @@ h6,.h6  {
                 <h5 class="modal-title" id="exampleModalLabel1">Feedback</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
+
               <div class="modal-body">
+
                 <div class="row">
                   <div class="col mb-3">
                     <label for="nameBasic" class="form-label">Additional Comment</label>
-                    <input type="text" id="nameBasic" class="form-control" placeholder="Comment">
+                    <textarea type="text" id="nameBasic" class="form-control" placeholder="Comment"rows="3"></textarea>
                   </div>
                 </div>
                  
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="sendDislikeComment()">Send</button>
+                <button type="button" class="btn btn-primary" onclick="sendLikeDislikeComment()">Send</button>
               </div>
+
             </div>
           </div>
         </div>
+
+    
+
+
+
+
       </div>
     </div>
 {% endblock %}

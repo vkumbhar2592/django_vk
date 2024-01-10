@@ -28,12 +28,68 @@
  
 
 
+function searchFAISS() {
+  var query = "my name is sam"; // Replace "your_query_here" with the actual query value
+
+  $.ajax({
+    url: '{{API_URL}}/manage/faiss-chunks/',
+    type: 'GET',
+    dataType: 'json',
+    data: { query: query }, // Add the query parameter to the API request
+    success: function (data) {
+      console.log(data);
+      alert('Searching the vector space is complete');
+    },
+    error: function (data) {
+      console.log(data);
+      alert('Searching the vector space failed');
+    }
+  });
+}
+
+function reindexVectorSpace() {
+  $.ajax({
+    url: '{{API_URL}}/manage/reindex-documents/',
+    type: 'GET',
+    dataType: 'json',
+    success: function (data) {
+      console.log(data);
+      alert('Reindexing the vector space is complete');
+    },
+    error: function (data) {
+      console.log(data);
+      alert('Reindexing the vector space failed');
+    }
+  });
+}
+
+
+function loadTextIntoSQL() {
+ 
+  $.ajax({
+    url: '{{API_URL}}/manage/LoadTextFilesIntoSQL/',
+    type: 'GET',
+    dataType: 'json',
+    data: {  }, // Add the query parameter to the API request
+    success: function (data) {
+      console.log(data);
+      alert('Adding text files into DB done');
+    },
+    error: function (data) {
+      console.log(data);
+      alert('Failure adding text files into DB');
+    }
+  });
+}
+
 </script>
 {% endblock page_js %}
 
 {% block content %}
 
-
+<button type="button" class="btn   btn-instagram  " onclick="reindexVectorSpace()">
+  <span class="tf-icons bx bx-pie-chart-alt me-1"></span>Reindex The Vector Space
+</button>
 
 <table class="table table-bordered table-hover">
   <thead class="table table-hover">

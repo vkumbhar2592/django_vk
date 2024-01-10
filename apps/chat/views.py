@@ -30,15 +30,16 @@ from .models import ChatLog
 from django.contrib.auth.decorators import login_required
 from apps.hrdata.utils import get_full_docs_after_faiss
 
-GPT_MODEL_4 = "gpt-4-1106-preview"
+# GPT_MODEL_4 = "gpt-4-1106-preview"
+GPT_MODEL_4 = "gpt-4-32k"
 GPT_MODEL_3 = "gpt-3.5-turbo-1106"
 MODEL_NAME = GPT_MODEL_4
 
 TEMP=0
 MAX_TOKENS=2000
-TOP_P=0
-FREQUENCY_PENALTY=0
-PRESENSE_PENALTY=0
+TOP_P=0.1
+FREQUENCY_PENALTY=0.5
+PRESENSE_PENALTY=0.5
 
 
 import nest_asyncio
@@ -88,9 +89,11 @@ def answer_stream(request):
     
     # Call the get_full_docs_after_faiss function
     result = get_full_docs_after_faiss(long_query) 
+    
     sources = [r.street_url for r in result]
+    source_names = [r.name for r in result]
     content_list = [r.content for r in result]
-    context_str = '\n\n'.join([f"CONTEXT {sources[i]}:\n\n{content}\n\n" for i, content in enumerate(content_list)]) 
+    context_str = '\n\n'.join([f"CONTEXT name: '{source_names[i]}' | CONTEXT  URL: '{sources[i]}'  :\n\n CONTEXT Data :\n {content}\n\n" for i, content in enumerate(content_list)]) 
     prompt = preparePrompt(context_str, long_query)  
     
     # Create a new ChatLog instance
@@ -108,11 +111,12 @@ def answer_stream(request):
  
 def update_like_status(request):
     chatlog_id = request.GET.get('chatlog_id')
+    comment = request.GET.get('comment')
     if chatlog_id:
         chatlog = get_object_or_404(ChatLog, id=chatlog_id)
         chatlog.is_liked = True
         chatlog.is_disliked = False
-        chatlog.dislike_comment = ''
+        chatlog.comment = comment or ''
         chatlog.save()
         return JsonResponse({'status': 'success'})
     else:
@@ -125,8 +129,7 @@ def update_dislike_status(request):
         chatlog = get_object_or_404(ChatLog, id=chatlog_id)
         chatlog.is_disliked = True
         chatlog.is_liked = False
-        if comment:
-            chatlog.dislike_comment = comment
+        chatlog.comment = comment or ''
         chatlog.save()
         return JsonResponse({'status': 'success'})
     else:
@@ -141,7 +144,7 @@ def update_dislike_comment(request):
     if chatlog_id:
         chatlog = get_object_or_404(ChatLog, id=chatlog_id) 
         if comment:
-            chatlog.dislike_comment = comment
+            chatlog.comment = comment
         chatlog.save()
         return JsonResponse({'status': 'success'})
     else:
@@ -176,49 +179,59 @@ def get_parents(result):
 
 def preparePrompt( documents, q):
     today = datetime.date.today()
+    current_month = datetime.datetime.now().month
     now = datetime.datetime.now()
-    
-    prompt = 'Today is ' + str(today) + '.' + 'The time is ' + str(now.hour) + ':' + str(now.minute) + ':' + str(now.second) + '.' 
-    prompt += '''\n\n'''
+     
  
-    prompt += f'''
+    prompt = f'''
         Question:
         {q}
 
-        Context:
         --------------------
+        Today is  {str(today)}  . The time is  {str(now.hour)}:{str(now.minute)}:{str(now.second)} .
+        --------------------
+        
+        
+        CONTEXT:
+
         {documents}
         --------------------
 
         Task:
+        Please reformulate and expand my question for clarity, but provide your answer based on the original question without including the reformulated versions
+        If the user is casually chatting with you, you can respond with a casual answer and include a dad joke about technology or internet or AI.
+        If the user is asking a question, you should provide a clear and concise answer and do not include any dad jokes.
+
+
         Go over the different contexts and make sure you understand them well. Then ignore the ones that are not relevant to the question.
+        Do not include your logic in the answer. Only include the answer itself.
 
-        Given the above question and context, rephrase and expand the question to help you do better answering but do not include your repharasing and expansion in the answer. 
-        Maintain all the information in the original question and don't include the question in the answer.
-        
-        
-        
+
         If the question doesn't mention which Yahoo office, use the US Yahoo office as the default.
-        Explain your reasoning step by step.
-        Please make your logic right about dates. When asked about a future date or event, do not use past dates. 
-        Answer as a nice and friendly HR assistant
-       
-       
-        Please provide the answer with clearly separated sections for each part of the response. 
-        Use 'div' elements to encapsulate each block of text, and include 'h6' tags for the headings of each section, rather than 'h2'. 
-        The goal is to have a neatly organized output that is easy to read and well-structured.
+        If the question is related to HR and just mentions a region, use that Yahoo office as default.
 
-        Make sure the answer is very detailed and comprehensive.
+
+        IMPORTANT: Please use lists and put each element in a div when appropriate for better readability.
+
+        Answer as a nice and friendly HR assistant and  USE LANGUAGE FROM THE CONTEXT AS MUCH AS POSSIBLE.
+        MAKE SURE YOUR ANSWER IS CORRECT and relevant.
+
+
+        Please provide the answer with clearly separated sections for each part of the response.
+        Use 'div' elements to encapsulate each block of text, and include 'h6' tags for the headings of each section, rather than 'h2'.
+        The goal is to have a neatly organized output that is easy to read and well-structured.
+        Make sure the answer is comprehensive.
+
 
         Boldest the important words in the answer.
-        Make sure you format your answer in a way that is easy to read and understand.
-        Formatting is important.
 
-        Please provide an answer to my question with detailed information. For each paragraph in your response, 
-        include a hyperlink that points to the specific source or reference you used for that information. 
-        Format the hyperlink as follows: <a href='URL'>URL Title</a>. 
+        Please provide an answer to my question with detailed information. For each section in your response,
+        include a hyperlink that points to the specific source or reference you used for that information.
+        Format the hyperlink as follows:  <a href='URL' target="_blank">URL_Title</a> . The URL title should be CONTEXT NAME provided in the CONTEXT.
         This will help in identifying which parts of the answer are based on which sources.
+        if the link has the form of yo/LINK , just add http to it looks like http://yo/LINK
 
+answer:
 
         
         ''' 

@@ -14,7 +14,7 @@ class ChatLog(models.Model):
     question = models.TextField()
     is_liked = models.BooleanField(default=False)
     is_disliked = models.BooleanField(default=False)
-    dislike_comment = models.TextField(default='')
+    comment = models.TextField(default='')
     prompt = models.TextField()
     is_bookmarked = models.BooleanField(default=False)
     response = models.TextField()

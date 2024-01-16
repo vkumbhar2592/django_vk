@@ -18,7 +18,7 @@ steps:
         "manage.py",
         "makemigrations",
       ]
-    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME']
+    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME','creds']
   - name: "gcr.io/google-appengine/exec-wrapper"
     args:
       [
@@ -31,7 +31,7 @@ steps:
         "manage.py",
         "migrate",
       ]
-    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME']
+    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME','creds']
 
   - name: "gcr.io/google-appengine/exec-wrapper"
     args:
@@ -48,7 +48,7 @@ steps:
         "2",
         "--no-input",
       ]
-    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME']
+    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME','creds']
 
   # Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -69,7 +69,7 @@ steps:
        "--platform",
        "managed",
       ]
-    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME']
+    secretEnv: ['ENVIRONMENT', 'DATABASE_URL', 'GS_BUCKET_NAME','creds']
 availableSecrets:
   secretManager:
   - versionName: projects/${_PROJECT_NUM}/secrets/ENVIRONMENT/versions/latest

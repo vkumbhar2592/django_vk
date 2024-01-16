@@ -26,7 +26,7 @@ from django.conf import settings
 from openai import OpenAI
 
 import datetime
-from .models import ChatLog
+from .models import SQLLog
 from django.contrib.auth.decorators import login_required
 from apps.hrdata.utils import get_full_docs_after_faiss
 
@@ -96,13 +96,13 @@ def answer_stream(request):
     context_str = '\n\n'.join([f"CONTEXT name: '{source_names[i]}' | CONTEXT  URL: '{sources[i]}'  :\n\n CONTEXT Data :\n {content}\n\n" for i, content in enumerate(content_list)]) 
     prompt = preparePrompt(context_str, long_query)  
     
-    # Create a new ChatLog instance
-    chat_log = ChatLog(
+    # Create a new SQLLog instance
+    chat_log = SQLLog(
         question=long_query,
         prompt=prompt,  # Assuming you have the prompt variable prepared as before
         # Initialize other fields as necessary
     )
-    # Save the initial state of the ChatLog
+    # Save the initial state of the SQLLog
     chat_log.save() 
 
     return StreamingHttpResponse(streamOpenAI(prompt, chat_log, result), content_type="text/event-stream")
@@ -110,59 +110,59 @@ def answer_stream(request):
 
  
 def update_like_status(request):
-    chatlog_id = request.GET.get('chatlog_id')
+    sqlLog_id = request.GET.get('sqlLog_id')
     comment = request.GET.get('comment')
-    if chatlog_id:
-        chatlog = get_object_or_404(ChatLog, id=chatlog_id)
-        chatlog.is_liked = True
-        chatlog.is_disliked = False
-        chatlog.comment = comment or ''
-        chatlog.save()
+    if sqlLog_id:
+        sqlLog = get_object_or_404(sqlLog, id=sqlLog_id)
+        sqlLog.is_liked = True
+        sqlLog.is_disliked = False
+        sqlLog.comment = comment or ''
+        sqlLog.save()
         return JsonResponse({'status': 'success'})
     else:
-        return JsonResponse({'status': 'error', 'message': 'ChatLog ID not provided'}, status=400)
+        return JsonResponse({'status': 'error', 'message': 'sqlLog ID not provided'}, status=400)
 
 def update_dislike_status(request):
-    chatlog_id = request.GET.get('chatlog_id')
+    sqlLog_id = request.GET.get('sqlLog_id')
     comment = request.GET.get('comment')
-    if chatlog_id:
-        chatlog = get_object_or_404(ChatLog, id=chatlog_id)
-        chatlog.is_disliked = True
-        chatlog.is_liked = False
-        chatlog.comment = comment or ''
-        chatlog.save()
+    if sqlLog_id:
+        sqlLog = get_object_or_404(sqlLog, id=sqlLog_id)
+        sqlLog.is_disliked = True
+        sqlLog.is_liked = False
+        sqlLog.comment = comment or ''
+        sqlLog.save()
         return JsonResponse({'status': 'success'})
     else:
-        return JsonResponse({'status': 'error', 'message': 'ChatLog ID not provided'}, status=400)
+        return JsonResponse({'status': 'error', 'message': 'sqlLog ID not provided'}, status=400)
 
 
 
 def update_dislike_comment(request):
-    chatlog_id = request.GET.get('chatlog_id')
+    sqlLog_id = request.GET.get('sqlLog_id')
     comment = request.GET.get('comment') 
     
-    if chatlog_id:
-        chatlog = get_object_or_404(ChatLog, id=chatlog_id) 
+    if sqlLog_id:
+        sqlLog = get_object_or_404(sqlLog, id=sqlLog_id) 
         if comment:
-            chatlog.comment = comment
-        chatlog.save()
+            sqlLog.comment = comment
+        sqlLog.save()
         return JsonResponse({'status': 'success'})
     else:
-        return JsonResponse({'status': 'error', 'message': 'ChatLog ID not provided'}, status=400)
+        return JsonResponse({'status': 'error', 'message': 'sqlLog ID not provided'}, status=400)
 
 
 def update_bookmark(request):
-    chatlog_id = request.GET.get('chatlog_id')
+    sqlLog_id = request.GET.get('sqlLog_id')
     bookmark = request.GET.get('bookmark') 
-    if chatlog_id:
-        chatlog = get_object_or_404(ChatLog, id=chatlog_id)
+    if sqlLog_id:
+        sqlLog = get_object_or_404(sqlLog, id=sqlLog_id)
         if bookmark: 
             is_bookmarked = bookmark == '1' 
-            chatlog.is_bookmarked = is_bookmarked
-        chatlog.save()
+            sqlLog.is_bookmarked = is_bookmarked
+        sqlLog.save()
         return JsonResponse({'status': 'success'})
     else:
-        return JsonResponse({'status': 'error', 'message': 'ChatLog ID not provided'}, status=400)
+        return JsonResponse({'status': 'error', 'message': 'sqlLog ID not provided'}, status=400)
 
 
 def get_parents(result):
@@ -268,8 +268,8 @@ def callOpenAI( prompt):
  
 def streamOpenAI(prompt,  chat_log, documents): 
     response_content = ""
-    sent_chat_log_id = False  # Flag to track if ChatLog ID has been sent
-    sent_source_url = False  # Flag to track if ChatLog ID has been sent
+    sent_chat_log_id = False  # Flag to track if sqlLog ID has been sent
+    sent_source_url = False  # Flag to track if sqlLog ID has been sent
 
     def event_stream(): 
         nonlocal response_content, sent_chat_log_id, sent_source_url
@@ -313,11 +313,11 @@ def streamOpenAI(prompt,  chat_log, documents):
                                 if 'delta' in choice and 'content' in choice['delta']:
                                     content = choice['delta']['content']
 
-                                    # Check if ChatLog ID needs to be sent
+                                    # Check if sqlLog ID needs to be sent
                                     if not sent_chat_log_id:
                                         yield f"data: {json.dumps({'chat_log_id': chat_log.id})}\n\n"
                                         sent_chat_log_id = True
-                                    # Check if ChatLog ID needs to be sent
+                                    # Check if sqlLog ID needs to be sent
                                     if not sent_source_url:
                                         sources = [r.name +'|' + r.street_url for r in documents]
                                         yield f"data: {json.dumps({'source': sources})}\n\n"
@@ -330,7 +330,7 @@ def streamOpenAI(prompt,  chat_log, documents):
                         print(f"Error decoding JSON: {e}")
                         
         if response_content:
-            # After receiving the complete response, update the ChatLog instance
+            # After receiving the complete response, update the sqlLog instance
             chat_log.response = response_content   
             chat_log.model_name = MODEL_NAME   
             chat_log.prompt = prompt   

@@ -6,12 +6,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("chat", "0010_alter_chatlog_id"),
+        ("chat", "0010_alter_sqlLog_id"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name="chatlog",
+            model_name="sqlLog",
             name="id",
             field=models.TextField(
                 default=apps.chat.models.generate_random_id,

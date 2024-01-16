@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name="chatlog",
+            model_name="sqlLog",
             name="user",
             field=models.ForeignKey(
                 default=0,

@@ -9,7 +9,7 @@ def generate_random_id():
     return str(random.randint(1540, 999999999999999999999999999999))
 
 
-class ChatLog(models.Model):
+class SQLLog(models.Model):
     id = models.TextField(primary_key=True, default=generate_random_id, editable=False)
     question = models.TextField()
     is_liked = models.BooleanField(default=False)
@@ -30,4 +30,4 @@ class ChatLog(models.Model):
     # Add other fields for chat logs here
 
     def __str__(self):
-        return f"ChatLog - prompt: {self.prompt}"
+        return f"SQLLog - prompt: {self.prompt}"

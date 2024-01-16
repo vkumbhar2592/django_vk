@@ -33,7 +33,7 @@ h6,.h6  {
 
 
   
-  chatLogs = [];
+  sqlLogs = [];
   sources =[]
   function makeTextBold(text) {
       const boldRegex = /\*\*(.*?)\*\*/g;
@@ -48,7 +48,7 @@ h6,.h6  {
   addMessageContainerToUI(id, message);
 
   let full_message = "";
-  let chatLogId; // Variable to store the ChatLog ID
+  let sqlLogId; // Variable to store the SQLLog ID
 
   const eventSource = new EventSource('api/answer_stream/?q=' + message);
   // const eventSource = new EventSource('api/answer_stream ss/?q=' + message  );
@@ -59,10 +59,10 @@ h6,.h6  {
     try {
       const data = JSON.parse(event.data);
       if (data.chat_log_id) {
-        // Store the ChatLog ID
-        chatLogId = data.chat_log_id;
-        console.log("ChatLog ID:", chatLogId);
-        chatLogs.push({'id': id, chatLog: chatLogId});
+        // Store the SQLLog ID
+        sqlLogId = data.chat_log_id;
+        console.log("SQLLog ID:", sqlLogId);
+        sqlLogs.push({'id': id, sqlLog: sqlLogId});
       } 
       else if (data.source) {
         for (let i = 0; i < data.source.length; i++) {
@@ -103,18 +103,18 @@ h6,.h6  {
 }
  
  function likeBtnClick(id) {   
-    const chatLog_id = chatLogs.find(x => x.id === id).chatLog
+    const sqlLog_id = sqlLogs.find(x => x.id === id).sqlLog
 
     const dislikeDiv = document.getElementById("dislike-btn-"+ id)
     dislikeDiv.classList.remove("bxs-dislike")
 
     const likeDiv = document.getElementById("like-btn-"+ id)
     likeDiv.classList.add("bxs-like")
-    disliked_response_id = chatLog_id;
+    disliked_response_id = sqlLog_id;
 
-    console.log('chatlogid >>> ' + chatLog_id)
+    console.log('sqlLogid >>> ' + sqlLog_id)
     // Send a GET request to the Django backend
-    fetch('/chat/api/update_like/?chatlog_id=' + chatLog_id)
+    fetch('/chat/api/update_like/?sqlLog_id=' + sqlLog_id)
     .then(response => response.json())
     .then(data => {
       if (data.status === 'success') {
@@ -138,14 +138,14 @@ h6,.h6  {
 
 
 
-    const chatLog_id = chatLogs.find(x => x.id === id).chatLog
-    disliked_response_id = chatLog_id;
+    const sqlLog_id = sqlLogs.find(x => x.id === id).sqlLog
+    disliked_response_id = sqlLog_id;
 
     const dislikeDiv = document.getElementById("dislike-btn-"+ id)
     dislikeDiv.classList.add("bxs-dislike")
 
     // Send a GET request to the Django backend
-    fetch('/chat/api/update_dislike/?chatlog_id=' + chatLog_id)
+    fetch('/chat/api/update_dislike/?sqlLog_id=' + sqlLog_id)
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
@@ -162,9 +162,9 @@ h6,.h6  {
 
   function bookmarkBtnClick(id) {
     console.log('> : ' + id)
-    console.log(chatLogs)
-    console.log('>> : '+ chatLogs.find(x => x.id === id).chatLog)
-    const chatLog_id = chatLogs.find(x => x.id === id).chatLog
+    console.log(sqlLogs)
+    console.log('>> : '+ sqlLogs.find(x => x.id === id).sqlLog)
+    const sqlLog_id = sqlLogs.find(x => x.id === id).sqlLog
 
     const bookmarkDiv = document.getElementById("bookmark-btn-"+ id);
     const is_bookmarked = bookmarkDiv.classList.contains("bxs-bookmark") ? true : false;
@@ -175,7 +175,7 @@ h6,.h6  {
 
     // return
     // Send a GET request to the Django backend
-    fetch('/chat/api/update_bookmark/?chatlog_id=' + chatLog_id + '&bookmark='+(is_bookmarked? '0' : '1'))
+    fetch('/chat/api/update_bookmark/?sqlLog_id=' + sqlLog_id + '&bookmark='+(is_bookmarked? '0' : '1'))
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
@@ -196,7 +196,7 @@ h6,.h6  {
     console.log(disliked_response_id);
 
     // Send a GET request to the Django backend
-    fetch('/chat/api/update_dislike_comment/?chatlog_id=' + disliked_response_id + '&comment=' + comment)
+    fetch('/chat/api/update_dislike_comment/?sqlLog_id=' + disliked_response_id + '&comment=' + comment)
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
@@ -216,7 +216,7 @@ h6,.h6  {
   }
 
   function supportBtnClick(id) {
-    console.log(chatLogs.find(x => x.chatLog === id).id) 
+    console.log(sqlLogs.find(x => x.sqlLog === id).id) 
   } 
 
   function addMessageContainerToUI(id, question){

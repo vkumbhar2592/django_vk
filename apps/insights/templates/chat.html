@@ -1,0 +1,417 @@
+{% extends layout_path %} {% load i18n %} {% block content %} 
+
+{% load socialaccount %}
+{% load static %}
+
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/animate-css/animate.css' %}" />
+{% endblock vendor_css %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/ui-modals.js' %}"></script>
+{% endblock page_js %}
+
+<link rel="stylesheet" href="{% static 'vendor/libs/spinkit/spinkit.css' %}" />
+
+<style>
+
+
+h6,.h6  { 
+    margin-bottom: .2rem !important; 
+    margin-top: .4rem !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
+    color: #212529 !important;
+}
+
+</style>
+<script>
+
+
+  
+  sqlLogs = [];
+  sources =[]
+  function makeTextBold(text) {
+      const boldRegex = /\*\*(.*?)\*\*/g;
+      return text.replace(boldRegex, '<strong>$1</strong>');
+  }
+  function sendMessage() {
+  sources =[]
+  const messageInput = document.querySelector('.message-input');
+  const message = messageInput.value;
+  const id = Math.random().toString(36).substring(7);
+  console.log(id);
+  addMessageContainerToUI(id, message);
+
+  let full_message = "";
+  let sqlLogId; // Variable to store the SQLLog ID
+
+  const eventSource = new EventSource('api/answer_stream/?q=' + message);
+  // const eventSource = new EventSource('api/answer_stream ss/?q=' + message  );
+
+  
+  eventSource.onmessage = function(event) { 
+    
+    try {
+      const data = JSON.parse(event.data);
+      if (data.chat_log_id) {
+        // Store the SQLLog ID
+        sqlLogId = data.chat_log_id;
+        console.log("SQLLog ID:", sqlLogId);
+        sqlLogs.push({'id': id, sqlLog: sqlLogId});
+      } 
+      else if (data.source) {
+        for (let i = 0; i < data.source.length; i++) {
+          let obj = data.source[i].split('|');
+          const title = obj[0];
+          const url = obj[1];
+          const existingTitle = sources.find(source => source.title === title);
+          if (!existingTitle) {
+          sources.push({ 'title': title, 'url': url });
+          }
+        }
+        const div = document.getElementById('sources-'+id);
+        div.innerHTML = 'Scanned Sources ' + sources.map(source => `<a href="${source.url}" target="_blank">${source.title}</a>`).join(' & ');  
+      }
+      else if (data.content) {
+        full_message += data.content ; //.replace(/\n\n/g, '<br/>');
+        
+        const div = document.getElementById(id);
+        div.innerHTML = makeTextBold(full_message);  
+      }
+
+       
+    } catch (e) {
+      console.error("Error parsing message:", e);
+    }
+
+    // Scroll to the latest message
+    const chatDiv = document.getElementById("chat-top-container");
+    chatDiv.scrollTop = chatDiv.scrollHeight - chatDiv.clientHeight;
+  };
+
+  eventSource.onerror = function(error) {
+    console.error("EventSource failed:", error);
+    eventSource.close();
+  };
+
+  messageInput.value = '';
+}
+ 
+ function likeBtnClick(id) {   
+    const sqlLog_id = sqlLogs.find(x => x.id === id).sqlLog
+
+    const dislikeDiv = document.getElementById("dislike-btn-"+ id)
+    dislikeDiv.classList.remove("bxs-dislike")
+
+    const likeDiv = document.getElementById("like-btn-"+ id)
+    likeDiv.classList.add("bxs-like")
+    disliked_response_id = sqlLog_id;
+
+    console.log('chatlogid >>> ' + sqlLog_id)
+    // Send a GET request to the Django backend
+    fetch('/chat/api/update_like/?chatlog_id=' + sqlLog_id)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        console.log('Like updated successfully');  
+      } else {
+              console.error('Error updating like:', data.message); 
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+
+  }
+
+  var disliked_response_id = 0;
+
+  function dislikeBtnClick(id) {
+
+    const likeDiv = document.getElementById("like-btn-"+ id)
+    likeDiv.classList.remove("bxs-like")
+
+
+
+    const sqlLog_id = sqlLogs.find(x => x.id === id).sqlLog
+    disliked_response_id = sqlLog_id;
+
+    const dislikeDiv = document.getElementById("dislike-btn-"+ id)
+    dislikeDiv.classList.add("bxs-dislike")
+
+    // Send a GET request to the Django backend
+    fetch('/chat/api/update_dislike/?chatlog_id=' + sqlLog_id)
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            console.log('Dislike updated successfully');  
+        } else {
+            console.error('Error updating like:', data.message);  
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+  }
+
+  function bookmarkBtnClick(id) {
+    console.log('> : ' + id)
+    console.log(sqlLogs)
+    console.log('>> : '+ sqlLogs.find(x => x.id === id).sqlLog)
+    const sqlLog_id = sqlLogs.find(x => x.id === id).sqlLog
+
+    const bookmarkDiv = document.getElementById("bookmark-btn-"+ id);
+    const is_bookmarked = bookmarkDiv.classList.contains("bxs-bookmark") ? true : false;
+    if(is_bookmarked)
+      bookmarkDiv.classList.remove("bxs-bookmark") 
+    else
+      bookmarkDiv.classList.add("bxs-bookmark")
+
+    // return
+    // Send a GET request to the Django backend
+    fetch('/chat/api/update_bookmark/?chatlog_id=' + sqlLog_id + '&bookmark='+(is_bookmarked? '0' : '1'))
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            console.log('Bookmark updated successfully');  
+        } else {
+            console.error('Error updating like:', data.message); 
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+  }
+
+  function sendLikeDislikeComment() {
+    const comment = document.getElementById("nameBasic").value;
+    console.log(comment);
+    console.log(disliked_response_id);
+
+    // Send a GET request to the Django backend
+    fetch('/chat/api/update_dislike_comment/?chatlog_id=' + disliked_response_id + '&comment=' + comment)
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            console.log('Dislike updated successfully');  
+            $('#dislike-feedback').modal('hide'); 
+            comment.innerHTML = '';
+        } else {
+            console.error('Error updating like:', data.message); 
+            $('#dislike-feedback').modal('hide'); 
+            comment.innerHTML = '';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+  }
+
+  function supportBtnClick(id) {
+    console.log(sqlLogs.find(x => x.sqlLog === id).id) 
+  } 
+
+  function addMessageContainerToUI(id, question){
+    var _html = 
+              '<div class="d-flex  align-items-center" style="margin-top: 10px;">' +
+              '<div > <img  src="{{user.socialaccount_set.all.0.get_avatar_url}}" alt class="w-px-40 h-auto rounded-circle" /> </div>' +
+              '<div   >' + 
+              '<div class="card mx-3 py-3 px-3" style="margin-top: 10px;">'+ question + '</div>' +
+              '</div>' +
+ 
+              '</div>' +
+ 
+              `<div class='card p-3 my-2' id="` + id + `"> <div class="sk-wave sk-primary">
+                <div class="sk-wave-rect"></div>
+                <div class="sk-wave-rect"></div>
+                <div class="sk-wave-rect"></div>
+                <div class="sk-wave-rect"></div>
+                <div class="sk-wave-rect"></div>
+              </div></div>` +          
+             
+              
+              `<div  id='sources-`+id+`' class=" "    ></div>`+
+              `<div data-bs-toggle="modal" data-bs-target="#dislike-feedback"   id='like-btn-`+id+`' class="s bx bx-like bx-sm cursor-pointer m-2 " onclick="likeBtnClick('`+id+`')"  ></div>`+
+              `<div data-bs-toggle="modal" data-bs-target="#dislike-feedback" id='dislike-btn-`+id+`' class=" bx bx-dislike bx-sm cursor-pointer m-2 "  onclick="dislikeBtnClick('`+id+`')" ></div>`+
+              `<div   id='bookmark-btn-`+id+`' class=" bx bx-bookmark-plus bx-sm cursor-pointer m-2 " onclick="bookmarkBtnClick('`+id+`')"   ></div>` ;
+
+    div = document.getElementById("chat-container");
+    div.innerHTML += _html.replace(/\n/g, "<br>");;
+
+    div = document.getElementById("chat-top-container");
+    div.scrollTop = div.scrollHeight - div.clientHeight;
+  }
+</script>
+
+
+<div class="row  " id="chat-top-container" style=" width: 100%;margin-top: 20px; z-index: 10;height: 100%;max-height: calc(100vh - 200px);overflow-y: scroll;"  >
+
+  <div class="col-2  ">
+    <div style="position: fixed; top: 0; left: 0;">
+      <span class="badge bg-label-primary cursor-pointer m-3"><a href="/"> HOME</a></span>
+    </div>
+  </div>
+
+  <div class="col-md-8 ">
+    <div id="chat-container"  >   
+        <div class="card">
+          <div class="d-flex align-items-end row">  
+              <div class="card-body">
+                <h5 class="card-title">Hi, I'm your Virtual HR Assistant. </h5>
+                <p class="mb-4">I am still in BETA mode and I can make mistakes. Consider checking important information.</p>
+                <span class="badge bg-label-primary">By Yahoo HR</span>
+              </div>
+          </div>
+        </div>  
+    </div>
+  </div>
+
+  <div class="col-2" style="position: fixed; top: 0; right: 0;">
+
+
+    <!-- USER DROP DOWN -->
+    <div class="navbar-nav-right d-flex align-items-center mt-auto" id="navbar-collapse">
+      <ul class="navbar-nav flex-row align-items-center ms-auto">
+        {% if user.is_authenticated %}
+        <!-- <div class="m-4"  > 
+          Logged in As: {{user}}   
+        </div> -->
+        <!-- User -->
+        <li class="nav-item navbar-dropdown dropdown-user dropdown">
+          <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+            <div class="avatar avatar-online">
+              <img src="{{user.socialaccount_set.all.0.get_avatar_url}}" alt class="w-px-40 h-auto rounded-circle" />
+            </div>
+          </a>
+
+          <!-- Dropdown -->
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <a class="dropdown-item" href="#">
+                <div class="d-flex">
+                  <div class="flex-shrink-0 me-3">
+                    <div class="avatar avatar-online">
+                      <img
+                        src="{{user.socialaccount_set.all.0.get_avatar_url}}"
+                        alt
+                        class="w-px-40 h-auto rounded-circle"
+                      />
+                    </div>
+                  </div>
+                  <div class="flex-grow-1">
+                    <span class="fw-medium d-block">{{user}}</span>
+                    <small class="text-muted">{{user.email}}</small>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li>
+              <div class="dropdown-divider"></div>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">
+                <i class="bx bx-user me-2"></i>
+                <span class="align-middle">My Profile</span>
+              </a>
+            </li>
+
+            <li></li>
+              <div class="dropdown-divider"></div>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'logout' %}?next=/">
+                <i class="bx bx-power-off me-2"></i>
+                <span>Logout</span>
+              </a>
+            </li>
+          </ul>
+          <!-- End of dropdown -->
+        </li>
+        <!--/ User -->
+
+        {% else %}
+        <li>
+          <a href="{% provider_login_url 'google' %}?next=/">Login with Google</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+    <!-- END OF USER DROP DOWN -->
+  </div>
+
+</div>
+
+<div class="row fixed-bottom " style="overflow-x: auto;overflow-y: hidden;"  >
+
+  <div class="col-2  mt-auto">
+  </div>
+
+  <div class="col-md-8  mt-auto " >
+    
+    <div class="bg-primary text-white p-3 d-flex justify-content-between align-items-center">
+      <input
+        class="form-control message-input border-0 me-3 shadow-none"
+        placeholder="Type your question here..."
+        onkeydown="if(event.keyCode===13){sendMessage()}"
+      />
+      <button class="btn btn-light" onclick="sendMessage()">></button> 
+    </div>
+    <p class="mb-4">Our agent is still in BETA mode and can make mistakes. Consider checking important information.</p>
+  </div>
+
+  <div class="col-2  mt-auto">
+    
+  </div>
+
+
+</div>
+
+
+    <!-- Default Modal -->
+    <div class="col-lg-4 col-md-6"> 
+      <div class="mt-3">
+     
+        <!-- DISLIKE / LIKE Modal -->
+        <div class="modal fade" id="dislike-feedback" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+
+              <div class="modal-body">
+
+                <div class="row">
+                  <div class="col mb-3">
+                    <label for="nameBasic" class="form-label">Additional Comment</label>
+                    <textarea type="text" id="nameBasic" class="form-control" placeholder="Comment"rows="3"></textarea>
+                  </div>
+                </div>
+                 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="sendLikeDislikeComment()">Send</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+    
+
+
+
+
+      </div>
+    </div>
+{% endblock %}

@@ -86,13 +86,13 @@ availableSecrets:
   #   env: 'SECRET'
 
 substitutions:
-  _INSTANCE_NAME: django-dev-db
-  _REGION: asia-south1
+  _INSTANCE_NAME: django-sashi-test-instance
+  _REGION: us-west4
   _REPO_NAME: cloud-run-source-deploy
   #_AR_HOSTNAME: gcr.io
-  _PROJECT_NUM: '683505664244'
+  _PROJECT_NUM: '151795946968'
   _SERVICE_NAME: django-vk
-  _SERVICE_ACCOUNT: svc-app-dev@django-project-3-409015.iam.gserviceaccount.com
+  _SERVICE_ACCOUNT: svc-django-app@django-app-1234.iam.gserviceaccount.com
 
 
 options:

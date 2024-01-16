@@ -5,27 +5,27 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("chat", "0005_remove_chatlog_user_chatlog_last_updated_by"),
+        ("chat", "0005_remove_sqlLog_user_sqlLog_last_updated_by"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name="chatlog",
+            model_name="sqlLog",
             name="comment",
             field=models.TextField(default=""),
         ),
         migrations.AddField(
-            model_name="chatlog",
+            model_name="sqlLog",
             name="is_disliked",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name="chatlog",
+            model_name="sqlLog",
             name="is_liked",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name="chatlog",
+            model_name="sqlLog",
             name="question",
             field=models.TextField(default=""),
             preserve_default=False,

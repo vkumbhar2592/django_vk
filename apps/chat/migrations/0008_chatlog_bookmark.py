@@ -5,12 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("chat", "0007_rename_comment_chatlog_dislike_comment"),
+        ("chat", "0007_rename_comment_sqlLog_dislike_comment"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name="chatlog",
+            model_name="sqlLog",
             name="bookmark",
             field=models.BooleanField(default=False),
         ),

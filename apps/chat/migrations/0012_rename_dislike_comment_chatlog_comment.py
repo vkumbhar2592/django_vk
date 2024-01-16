@@ -5,12 +5,12 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("chat", "0011_alter_chatlog_id"),
+        ("chat", "0011_alter_sqlLog_id"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name="chatlog",
+            model_name="sqlLog",
             old_name="dislike_comment",
             new_name="comment",
         ),

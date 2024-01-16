@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.conf import settings
 from django.utils.decorators import method_decorator
 from apps.hrdata.models import Document, Topic, Region, Tag
-from apps.chat.models import ChatLog
+from apps.chat.models import SQLLog
 
  # Assuming the admin_required decorator is defined as shown earlier
 from .decorators import admin_required  # Import the custom decorator
@@ -31,7 +31,7 @@ class TableView(TemplateView):
         context['tags'] = Tag.objects.all()
         context['regions'] = Region.objects.all()
         context['documents'] = Document.objects.all()
-        context['chatlogs'] = ChatLog.objects.all()
+        context['chatlogs'] = SQLLog.objects.all()
         return context
 
 def document_update_view(request, pk):

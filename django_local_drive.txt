@@ -2,28 +2,28 @@
 
 project: django-project-3
 
-project id: django-project-3-409015
-project number: 683505664244
+project id: django-app-1234
+project number: 151795946968
 region: us-west4
 
-svc:  svc-app-dev@django-project-3-409015.iam.gserviceaccount.com
+svc:  svc-django-app@django-app-1234.iam.gserviceaccount.com
 
-gcs bucket: django_dev_bucket_4
+gcs bucket: django-app-sv-bucket
 
 db instance:
 
-instance: django-dev-db
-db: djangodevdb
-db user: admin
-db pwd: admin
+instance: django-sashi-test-instance
+db: django-dev-db
+db user: djangodevdbadmin
+db pwd: djangodevdbadmin
 
 cloud run service name: django-vk
 
-DATABASE_URL=postgres://admin:admin@//cloudsql/django-project-3-409015:asia-south1:django-dev-db/djangodevdb
+DATABASE_URL=postgres://djangodevdbadmin:djangodevdbadmin@//cloudsql/django-app-1234:us-west4:django-sashi-test-instance/django-dev-db
 
 Secrets:
-django_settings : projects/683505664244/secrets/django_settings/versions/latest
-DATABASE_URL : projects/683505664244/secrets/DATABASE_URL/versions/latest
-GS_BUCKET_NAME : projects/683505664244/secrets/GS_BUCKET_NAME/versions/latest
-ENVIRONMENT : projects/683505664244/secrets/ENVIRONMENT/versions/latest
+django_settings : projects/151795946968/secrets/django_settings/versions/latest
+DATABASE_URL : projects/151795946968/secrets/DATABASE_URL/versions/latest
+GS_BUCKET_NAME : projects/151795946968/secrets/GS_BUCKET_NAME/versions/latest
+ENVIRONMENT : projects/151795946968/secrets/ENVIRONMENT/versions/latest
 

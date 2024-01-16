@@ -80,7 +80,7 @@ elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
     #project_num  = os.environ.get("GOOGLE_CLOUD_PROJECT_NUM")
     #project_num  = 856106838446
-    project_num  = 683505664244
+    project_num  = 151795946968
     client = secretmanager.SecretManagerServiceClient()
     settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
     name = f"projects/{project_num}/secrets/{settings_name}/versions/latest"

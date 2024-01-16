@@ -6,12 +6,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("chat", "0009_rename_bookmark_chatlog_is_bookmarked"),
+        ("chat", "0009_rename_bookmark_sqlLog_is_bookmarked"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name="chatlog",
+            model_name="sqlLog",
             name="id",
             field=models.BigIntegerField(
                 default=apps.chat.models.generate_random_id,

@@ -5,17 +5,17 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("chat", "0002_chatlog_user"),
+        ("chat", "0002_sqlLog_user"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name="chatlog",
+            model_name="sqlLog",
             old_name="context",
             new_name="model_name",
         ),
         migrations.AddField(
-            model_name="chatlog",
+            model_name="sqlLog",
             name="prompt",
             field=models.TextField(default=0),
             preserve_default=False,

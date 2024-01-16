@@ -5,16 +5,16 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("chat", "0004_remove_chatlog_question_remove_chatlog_temp"),
+        ("chat", "0004_remove_sqlLog_question_remove_sqlLog_temp"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name="chatlog",
+            model_name="sqlLog",
             name="user",
         ),
         migrations.AddField(
-            model_name="chatlog",
+            model_name="sqlLog",
             name="last_updated_by",
             field=models.CharField(default="", max_length=100),
         ),

@@ -80,6 +80,8 @@ availableSecrets:
     env: 'DATABASE_URL'
   - versionName: projects/${_PROJECT_NUM}/secrets/GS_BUCKET_NAME/versions/latest
     env: 'GS_BUCKET_NAME'
+  - versionName: projects/${_PROJECT_NUM}/secrets/creds/versions/latest
+    env: 'creds'
   # - versionName: projects/${_PROJECT_NUM}/secrets/CLIENT_ID/versions/latest
   #   env: 'CLIENT_ID'
   # - versionName: projects/${_PROJECT_NUM}/secrets/SECRET/versions/latest
